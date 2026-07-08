@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useTransition } from 'react';
+import React, { useState, useTransition, useEffect } from 'react';
 import { Task, addTask, toggleTask, deleteTask } from '../actions';
 import { 
   Plus, 
@@ -8,7 +8,9 @@ import {
   CheckCircle, 
   Circle, 
   AlertCircle, 
-  Calendar
+  Calendar,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 interface TaskManagerProps {
@@ -25,6 +27,22 @@ export default function TaskManager({ initialTasks, error: initError }: TaskMana
   const [errorMessage, setErrorMessage] = useState(initError);
   const [prevInitialTasks, setPrevInitialTasks] = useState(initialTasks);
   const [activeTab, setActiveTab] = useState<'today' | 'tomorrow' | 'upcoming'>('today');
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  // Initialize theme from localStorage or default to 'light' (whitemode)
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('app-theme') as 'light' | 'dark' | null;
+    const initial = savedTheme || 'light';
+    setTheme(initial);
+    document.documentElement.setAttribute('data-theme', initial);
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(nextTheme);
+    localStorage.setItem('app-theme', nextTheme);
+    document.documentElement.setAttribute('data-theme', nextTheme);
+  };
 
   // Helper for local date string YYYY-MM-DD
   const getLocalDateString = (offset = 0) => {
@@ -186,11 +204,24 @@ export default function TaskManager({ initialTasks, error: initError }: TaskMana
 
   return (
     <div className="app-container">
+      <div className="logo-section">
+        <img src="/logo.png" alt="Moodo Logo" className="app-logo" />
+      </div>
       <header className="app-header">
         <div className="header-info">
-          <div className="date-wrapper">
-            <Calendar size={14} className="text-secondary" />
-            <span className="current-date">{getFormattedDate()}</span>
+          <div className="header-top-row">
+            <div className="date-wrapper">
+              <Calendar size={14} className="text-secondary" />
+              <span className="current-date">{getFormattedDate()}</span>
+            </div>
+            <button 
+              onClick={toggleTheme}
+              className="theme-toggle-btn"
+              aria-label="Toggle theme"
+              title={theme === 'light' ? 'Ubah ke mode gelap' : 'Ubah ke mode terang'}
+            >
+              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+            </button>
           </div>
           <h1 className="app-title">Hari Ini</h1>
           <p className="app-subtitle">
