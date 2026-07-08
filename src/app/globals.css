@@ -1,52 +1,57 @@
-:root {
-  --background: #fafafa;
-  --foreground: #18181b;
+:root,
+[data-theme="light"] {
+  --background: #edf5fd;
+  --foreground: #1a3454;
   --card-bg: #ffffff;
-  --card-border: #e4e4e7;
-  --input-bg: #f4f4f5;
-  --input-border: #e4e4e7;
+  --card-border: #d8e6f5;
+  --input-bg: #f4f8fc;
+  --input-border: #cfe0f1;
   
-  --high-color: #ef4444;
-  --high-bg: #fef2f2;
-  --high-border: #fca5a5;
+  --high-color: #ff4d4d;
+  --high-bg: #fff2f2;
+  --high-border: #ffd1d1;
   
-  --medium-color: #3b82f6;
-  --medium-bg: #eff6ff;
-  --medium-border: #93c5fd;
+  --medium-color: #3795eb;
+  --medium-bg: #e4f1fe;
+  --medium-border: #bce0fd;
   
-  --low-color: #10b981;
-  --low-bg: #ecfdf5;
-  --low-border: #6ee7b7;
+  --low-color: #24c274;
+  --low-bg: #e6f9f0;
+  --low-border: #c2f2dd;
   
-  --text-muted: #71717a;
-  --text-secondary: #27272a;
+  --text-muted: #607d9f;
+  --text-secondary: #24456c;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #09090b;
-    --foreground: #fafafa;
-    --card-bg: #18181b;
-    --card-border: #27272a;
-    --input-bg: #202024;
-    --input-border: #2d2d34;
-    
-    --high-color: #f87171;
-    --high-bg: rgba(239, 68, 68, 0.08);
-    --high-border: rgba(239, 68, 68, 0.2);
-    
-    --medium-color: #60a5fa;
-    --medium-bg: rgba(59, 130, 246, 0.08);
-    --medium-border: rgba(59, 130, 246, 0.2);
-    
-    --low-color: #34d399;
-    --low-bg: rgba(16, 185, 129, 0.08);
-    --low-border: rgba(16, 185, 129, 0.2);
-    
-    --text-muted: #a1a1aa;
-    --text-secondary: #e4e4e7;
-  }
+
+[data-theme="dark"] {
+  --background: #09090b;
+  --foreground: #fafafa;
+  --card-bg: #18181b;
+  --card-border: #27272a;
+  --input-bg: #202024;
+  --input-border: #2d2d34;
+  
+  --high-color: #f87171;
+  --high-bg: rgba(239, 68, 68, 0.08);
+  --high-border: rgba(239, 68, 68, 0.2);
+  
+  --medium-color: #60a5fa;
+  --medium-bg: rgba(59, 130, 246, 0.08);
+  --medium-border: rgba(59, 130, 246, 0.2);
+  
+  --low-color: #34d399;
+  --low-bg: rgba(16, 185, 129, 0.08);
+  --low-border: rgba(16, 185, 129, 0.2);
+  
+  --text-muted: #a1a1aa;
+  --text-secondary: #e4e4e7;
 }
+
+body, .app-container, .priority-card, .quick-input-wrapper, .tab-navigation, .tab-btn, .task-item, .upcoming-date-picker, .date-input, button, input {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+
 
 * {
   box-sizing: border-box;
@@ -67,9 +72,30 @@ body {
 .app-container {
   max-width: 580px;
   margin: 0 auto;
-  padding: 40px 20px 80px 20px;
+  padding: 30px 20px 80px 20px;
   display: flex;
   flex-direction: column;
+}
+
+/* Logo Brand */
+.logo-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.app-logo {
+  max-height: 85px;
+  width: auto;
+  border-radius: 12px;
+  object-fit: contain;
+  box-shadow: 0 4px 12px rgba(58, 155, 242, 0.08);
+}
+
+[data-theme="dark"] .app-logo {
+  opacity: 0.95;
+  filter: brightness(0.9) contrast(1.05);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 /* Header */
@@ -84,7 +110,37 @@ body {
   font-size: 0.85rem;
   color: var(--text-muted);
   font-weight: 500;
-  margin-bottom: 6px;
+}
+
+.header-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.theme-toggle-btn {
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
+  color: var(--foreground);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.06);
+  background: var(--card-border);
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.94);
 }
 
 .app-title {
@@ -475,4 +531,51 @@ body {
   color: var(--high-color);
   border: 1px solid var(--high-border);
 }
+
+/* Mobile Responsiveness Improvements */
+@media (max-width: 480px) {
+  .app-container {
+    padding: 20px 12px 60px 12px;
+  }
+
+  .app-title {
+    font-size: 1.5rem;
+  }
+
+  .app-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .priority-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .upcoming-date-picker {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .upcoming-date-picker label {
+    font-size: 0.8rem;
+  }
+
+  .date-input {
+    width: 100%;
+    text-align: center;
+  }
+
+  .task-item {
+    gap: 8px;
+  }
+
+  .task-title {
+    font-size: 0.85rem;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+}
+
 
